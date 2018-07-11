@@ -1,6 +1,6 @@
-let x, y;
+let x, y, xoff, yoff;
 let size, speed, quality;
-let sizeSl, speedSl, qualitySl;
+let sizeSl, speedSl, qualitySl, xoffSl, yoffSl;
 
 function preload() {}
 
@@ -8,17 +8,25 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   x = y = 0;
 
-  sizeSl = createSlider(100, 1000, 500);
+  sizeSl = createSlider(100, 10000, 500);
   sizeSl.changed(reset);
   sizeSl.position(10, 10);
 
-  speedSl = createSlider(100, 1000, 500);
+  speedSl = createSlider(100, 10000, 500);
   speedSl.changed(reset);
   speedSl.position(10, 40);
 
-  qualitySl = createSlider(1, 100, 5);
+  qualitySl = createSlider(1, 100, 100);
   qualitySl.changed(reset);
   qualitySl.position(10, 70);
+
+  xoffSl = createSlider(-width / 2, width / 2, 0);
+  xoffSl.changed(reset);
+  xoffSl.position(10, 100);
+
+  yoffSl = createSlider(-height / 2, height / 2, 0);
+  yoffSl.changed(reset);
+  yoffSl.position(10, 130);
 
   reset();
 }
@@ -29,8 +37,8 @@ function windowResized() {
 }
 
 function draw() {
-  strokeWeight(quality);
-  translate((width - size) / 2, (height - size) / 2);
+  strokeWeight(10 - quality);
+  translate(((width - size) / 2) + xoff, ((height - size) / 2) + yoff);
 
   for (let i = 0; i < speed; i++) {
     let color = 125;
@@ -67,5 +75,7 @@ function reset() {
   size = sizeSl.value();
   speed = speedSl.value();
   quality = qualitySl.value() / 10;
+  xoff = xoffSl.value();
+  yoff = yoffSl.value();
   background(10);
 }

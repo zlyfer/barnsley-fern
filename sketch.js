@@ -43,15 +43,25 @@ function windowResized() {
   reset();
 }
 
+function keyPressed() {
+  if (keyCode == 18) {
+    acc = !acc;
+  }
+}
+
 function draw() {
   checkChange();
+  applySettings();
 
   push();
   strokeWeight(10 - quality);
+  colorMode(HSL);
   translate(((width - size) / 2) + xoff, ((height - size) / 2) + yoff);
   for (let i = 0; i < speed; i++) {
-    let color = round(random(0, 255));
-    stroke(color, color, color);
+    let h = map(x, -2.1820, 2.6558, -size / 5196, size / 8);
+    let s = 50;
+    let b = 50;
+    stroke(h, s, b);
     let rx = map(x, -2.1820, 2.6558, 0, size);
     let ry = map(y, 0, 9.9983, size, 0);
     point(rx, ry);
@@ -61,7 +71,7 @@ function draw() {
 
   push();
   textSize(32);
-  fill(0);
+  fill(20);
   rect(width - 95, 0, 95, 40)
   fill(255);
   text(`fps: ${round(frameRate())}`, width - 95, 32)
@@ -99,12 +109,7 @@ function checkChange() {
 }
 
 function reset() {
-  size = sizeSl.value();
-  speed = speedSl.value();
-  quality = qualitySl.value() / 10;
-  xoff = xoffSl.value();
-  yoff = yoffSl.value();
-  background(10);
+  background(20);
 }
 
 function mouseWheel(event) {
@@ -159,14 +164,16 @@ function mouseWheel(event) {
   }
 }
 
-function keyPressed() {
-  if (keyCode == 18) {
-    acc = !acc;
-  }
-}
-
 function randomGen() {
   xoffSl.value(random(-width / 2, width / 2));
   yoffSl.value(random(-height / 2, height / 2));
   sizeSl.value(random(sizeSl.elt.min, sizeSl.elt.max));
+}
+
+function applySettings() {
+  size = sizeSl.value();
+  speed = speedSl.value();
+  quality = qualitySl.value() / 10;
+  xoff = xoffSl.value();
+  yoff = yoffSl.value();
 }

@@ -35,7 +35,6 @@ function setup() {
 	randomBn.mousePressed(randomGen);
 
 	fpsp = createP();
-	fpsp.position(width - 64, 0);
 
 	reset();
 }
@@ -175,6 +174,7 @@ function checkChange() {
 
 function reset() {
 	background(20);
+	fpsp.position(width - 64, 0);
 }
 
 function randomGen() {

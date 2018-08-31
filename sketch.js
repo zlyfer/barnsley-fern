@@ -40,16 +40,9 @@ function setup() {
 	reset();
 }
 
-function windowResized() {
-	resizeCanvas(windowWidth, windowHeight);
-	reset();
-}
-
-function keyPressed() {
-	if (keyCode == 18) {
-		acc = !acc;
-	}
-}
+// function windowResized() {
+// 	adjust();
+// }
 
 function draw() {
 	checkChange();
@@ -79,40 +72,6 @@ function draw() {
 	// text(`fps: ${round(frameRate())}`, width - 95, 32)
 	// pop();
 	fpsp.html(`fps: ${round(frameRate())}`);
-}
-
-function portionGen() {
-	let p = random(1);
-	let nx, ny;
-	if (p <= 0.01) {
-		nx = 0 * x + 0 * y;
-		ny = 0 * x + 0.16 * y;
-	} else if (p > 0.01 && p <= 0.86) {
-		nx = 0.85 * x + 0.04 * y;
-		ny = -0.04 * x + 0.85 * y + 1.6;
-	} else if (p > 0.86 && p <= 0.93) {
-		nx = 0.2 * x - 0.26 * y;
-		ny = 0.23 * x + 0.22 * y + 1.6;
-	} else if (p > 0.93 /*&& p <= 1*/ ) {
-		nx = -0.15 * x + 0.28 * y;
-		ny = 0.26 * x + 0.24 * y + 0.44;
-	}
-	x = nx;
-	y = ny;
-}
-
-function checkChange() {
-	if ((sizeSl.value() != size) ||
-		// (speedSl.value() != speed) ||
-		(qualitySl.value() / 10 != quality) ||
-		(xoffSl.value() != xoff) ||
-		(yoffSl.value() != yoff)) {
-		reset();
-	}
-}
-
-function reset() {
-	background(20);
 }
 
 function mouseWheel(event) {
@@ -165,6 +124,57 @@ function mouseWheel(event) {
 				break;
 		}
 	}
+}
+
+function keyPressed() {
+	console.log(keyCode);
+	switch (keyCode) {
+		case 18:
+			acc = !acc;
+			break;
+		case 32:
+			adjust();
+			break;
+	}
+}
+
+function adjust() {
+	resizeCanvas(windowWidth, windowHeight);
+	reset();
+}
+
+function portionGen() {
+	let p = random(1);
+	let nx, ny;
+	if (p <= 0.01) {
+		nx = 0 * x + 0 * y;
+		ny = 0 * x + 0.16 * y;
+	} else if (p > 0.01 && p <= 0.86) {
+		nx = 0.85 * x + 0.04 * y;
+		ny = -0.04 * x + 0.85 * y + 1.6;
+	} else if (p > 0.86 && p <= 0.93) {
+		nx = 0.2 * x - 0.26 * y;
+		ny = 0.23 * x + 0.22 * y + 1.6;
+	} else if (p > 0.93 /*&& p <= 1*/ ) {
+		nx = -0.15 * x + 0.28 * y;
+		ny = 0.26 * x + 0.24 * y + 0.44;
+	}
+	x = nx;
+	y = ny;
+}
+
+function checkChange() {
+	if ((sizeSl.value() != size) ||
+		// (speedSl.value() != speed) ||
+		(qualitySl.value() / 10 != quality) ||
+		(xoffSl.value() != xoff) ||
+		(yoffSl.value() != yoff)) {
+		reset();
+	}
+}
+
+function reset() {
+	background(20);
 }
 
 function randomGen() {

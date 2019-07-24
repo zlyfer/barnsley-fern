@@ -9,7 +9,7 @@ function setup() {
 	createCanvas(windowWidth, windowHeight);
 	x = y = 0;
 
-	sizeSl = createSlider(100, 10000, 500);
+	sizeSl = createSlider(100, 100000, 500);
 	// sizeSl.changed(reset);
 	sizeSl.position(10, 10);
 
@@ -29,9 +29,9 @@ function setup() {
 	// yoffSl.changed(reset);
 	yoffSl.position(10, 130);
 
-	randomBn = createButton('Random');
+	randomBn = createButton("Random");
 	randomBn.position(10, 170);
-	randomBn.style('width', '130px');
+	randomBn.style("width", "130px");
 	randomBn.mousePressed(randomGen);
 
 	fpsp = createP();
@@ -50,13 +50,14 @@ function draw() {
 	push();
 	strokeWeight(10 - quality);
 	colorMode(HSL);
-	translate(((width - size) / 2) + xoff, ((height - size) / 2) + yoff);
+	translate((width - size) / 2 + xoff, (height - size) / 2 + yoff);
 	for (let i = 0; i < speed; i++) {
-		let h = map(x, -2.1820, 2.6558, -size / 5196, size / 8);
+		let h = map(x, -2.182, 2.6558, -size / 5196, size / 8);
+		h = map(x, -2.182, 2.6558, -size / 5196, size);
 		let s = 50;
 		let b = 50;
 		stroke(h, s, b);
-		let rx = map(x, -2.1820, 2.6558, 0, size);
+		let rx = map(x, -2.182, 2.6558, 0, size);
 		let ry = map(y, 0, 9.9983, size, 0);
 		point(rx, ry);
 		portionGen();
@@ -81,19 +82,19 @@ function mouseWheel(event) {
 	if (event.delta < 0) {
 		switch (keyCode) {
 			case 101:
-				qualitySl.value(qualitySl.value() + (changer / 15));
+				qualitySl.value(qualitySl.value() + changer / 15);
 				break;
 			case 113:
 				sizeSl.value(sizeSl.value() + changer);
 				break;
 			case 114:
-				xoffSl.value(xoffSl.value() + (changer / 5));
+				xoffSl.value(xoffSl.value() + changer / 5);
 				break;
 			case 116:
-				yoffSl.value(yoffSl.value() + (changer / 5));
+				yoffSl.value(yoffSl.value() + changer / 5);
 				break;
 			case 119:
-				speedSl.value(speedSl.value() + (changer * 10));
+				speedSl.value(speedSl.value() + changer * 10);
 				speed = speedSl.value();
 				break;
 			default:
@@ -103,19 +104,19 @@ function mouseWheel(event) {
 	} else {
 		switch (keyCode) {
 			case 101:
-				qualitySl.value(qualitySl.value() - (changer / 15));
+				qualitySl.value(qualitySl.value() - changer / 15);
 				break;
 			case 113:
 				sizeSl.value(sizeSl.value() - changer);
 				break;
 			case 114:
-				xoffSl.value(xoffSl.value() - (changer / 5));
+				xoffSl.value(xoffSl.value() - changer / 5);
 				break;
 			case 116:
-				yoffSl.value(yoffSl.value() - (changer / 5));
+				yoffSl.value(yoffSl.value() - changer / 5);
 				break;
 			case 119:
-				speedSl.value(speedSl.value() - (changer * 10));
+				speedSl.value(speedSl.value() - changer * 10);
 				speed = speedSl.value();
 				break;
 			default:
@@ -154,7 +155,7 @@ function portionGen() {
 	} else if (p > 0.86 && p <= 0.93) {
 		nx = 0.2 * x - 0.26 * y;
 		ny = 0.23 * x + 0.22 * y + 1.6;
-	} else if (p > 0.93 /*&& p <= 1*/ ) {
+	} else if (p > 0.93 /*&& p <= 1*/) {
 		nx = -0.15 * x + 0.28 * y;
 		ny = 0.26 * x + 0.24 * y + 0.44;
 	}
@@ -163,11 +164,13 @@ function portionGen() {
 }
 
 function checkChange() {
-	if ((sizeSl.value() != size) ||
+	if (
+		sizeSl.value() != size ||
 		// (speedSl.value() != speed) ||
-		(qualitySl.value() / 10 != quality) ||
-		(xoffSl.value() != xoff) ||
-		(yoffSl.value() != yoff)) {
+		qualitySl.value() / 10 != quality ||
+		xoffSl.value() != xoff ||
+		yoffSl.value() != yoff
+	) {
 		reset();
 	}
 }

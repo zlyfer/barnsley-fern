@@ -1,3 +1,5 @@
+// jshint esversion: 6
+
 let x, y, xoff, yoff;
 let size, speed, quality;
 let sizeSl, speedSl, qualitySl, xoffSl, yoffSl, randomBn, fpsp;
@@ -6,37 +8,37 @@ let acc = false;
 function preload() {}
 
 function setup() {
-	createCanvas(windowWidth, windowHeight);
-	x = y = 0;
+  createCanvas(windowWidth, windowHeight);
+  x = y = 0;
 
-	sizeSl = createSlider(100, 100000, 500);
-	// sizeSl.changed(reset);
-	sizeSl.position(10, 10);
+  sizeSl = createSlider(100, 100000, 500);
+  // sizeSl.changed(reset);
+  sizeSl.position(10, 10);
 
-	speedSl = createSlider(250, 10000, 1000);
-	// speedSl.changed(reset);
-	speedSl.position(10, 40);
+  speedSl = createSlider(250, 10000, 1000);
+  // speedSl.changed(reset);
+  speedSl.position(10, 40);
 
-	qualitySl = createSlider(1, 100, 100);
-	// qualitySl.changed(reset);
-	qualitySl.position(10, 70);
+  qualitySl = createSlider(1, 100, 100);
+  // qualitySl.changed(reset);
+  qualitySl.position(10, 70);
 
-	xoffSl = createSlider(-width / 2, width / 2, 0);
-	// xoffSl.changed(reset);
-	xoffSl.position(10, 100);
+  xoffSl = createSlider(-width / 2, width / 2, 0);
+  // xoffSl.changed(reset);
+  xoffSl.position(10, 100);
 
-	yoffSl = createSlider(-height / 2, height / 2, 0);
-	// yoffSl.changed(reset);
-	yoffSl.position(10, 130);
+  yoffSl = createSlider(-height / 2, height / 2, 0);
+  // yoffSl.changed(reset);
+  yoffSl.position(10, 130);
 
-	randomBn = createButton("Random");
-	randomBn.position(10, 170);
-	randomBn.style("width", "130px");
-	randomBn.mousePressed(randomGen);
+  randomBn = createButton("Random");
+  randomBn.position(10, 170);
+  randomBn.style("width", "130px");
+  randomBn.mousePressed(randomGen);
 
-	fpsp = createP();
+  fpsp = createP();
 
-	reset();
+  reset();
 }
 
 // function windowResized() {
@@ -44,152 +46,152 @@ function setup() {
 // }
 
 function draw() {
-	checkChange();
-	applySettings();
+  checkChange();
+  applySettings();
+  frameRate(120);
+  push();
+  strokeWeight(10 - quality);
+  colorMode(HSL);
+  translate((width - size) / 2 + xoff, (height - size) / 2 + yoff);
+  for (let i = 0; i < speed; i++) {
+    let h = map(x, -2.182, 2.6558, -size / 5196, size / 8);
+    h = map(x, -2.182, 2.6558, -size / 5196, size);
+    let s = 50;
+    let b = 50;
+    stroke(h, s, b);
+    let rx = map(x, -2.182, 2.6558, 0, size);
+    let ry = map(y, 0, 9.9983, size, 0);
+    point(rx, ry);
+    portionGen();
+  }
+  pop();
 
-	push();
-	strokeWeight(10 - quality);
-	colorMode(HSL);
-	translate((width - size) / 2 + xoff, (height - size) / 2 + yoff);
-	for (let i = 0; i < speed; i++) {
-		let h = map(x, -2.182, 2.6558, -size / 5196, size / 8);
-		h = map(x, -2.182, 2.6558, -size / 5196, size);
-		let s = 50;
-		let b = 50;
-		stroke(h, s, b);
-		let rx = map(x, -2.182, 2.6558, 0, size);
-		let ry = map(y, 0, 9.9983, size, 0);
-		point(rx, ry);
-		portionGen();
-	}
-	pop();
-
-	// push();
-	// textSize(32);
-	// fill(20);
-	// rect(width - 95, 0, 95, 40)
-	// fill(255);
-	// text(`fps: ${round(frameRate())}`, width - 95, 32)
-	// pop();
-	fpsp.html(`fps: ${round(frameRate())}`);
+  // push();
+  // textSize(32);
+  // fill(20);
+  // rect(width - 95, 0, 95, 40)
+  // fill(255);
+  // text(`fps: ${round(frameRate())}`, width - 95, 32)
+  // pop();
+  fpsp.html(`fps: ${round(frameRate())}`);
 }
 
 function mouseWheel(event) {
-	let changer = 25;
-	if (acc) {
-		changer = changer * 2;
-	}
-	if (event.delta < 0) {
-		switch (keyCode) {
-			case 101:
-				qualitySl.value(qualitySl.value() + changer / 15);
-				break;
-			case 113:
-				sizeSl.value(sizeSl.value() + changer);
-				break;
-			case 114:
-				xoffSl.value(xoffSl.value() + changer / 5);
-				break;
-			case 116:
-				yoffSl.value(yoffSl.value() + changer / 5);
-				break;
-			case 119:
-				speedSl.value(speedSl.value() + changer * 10);
-				speed = speedSl.value();
-				break;
-			default:
-				sizeSl.value(sizeSl.value() + changer);
-				break;
-		}
-	} else {
-		switch (keyCode) {
-			case 101:
-				qualitySl.value(qualitySl.value() - changer / 15);
-				break;
-			case 113:
-				sizeSl.value(sizeSl.value() - changer);
-				break;
-			case 114:
-				xoffSl.value(xoffSl.value() - changer / 5);
-				break;
-			case 116:
-				yoffSl.value(yoffSl.value() - changer / 5);
-				break;
-			case 119:
-				speedSl.value(speedSl.value() - changer * 10);
-				speed = speedSl.value();
-				break;
-			default:
-				sizeSl.value(sizeSl.value() - changer);
-				break;
-		}
-	}
+  let changer = 25;
+  if (acc) {
+    changer = changer * 2;
+  }
+  if (event.delta < 0) {
+    switch (keyCode) {
+      case 101:
+        qualitySl.value(qualitySl.value() + changer / 15);
+        break;
+      case 113:
+        sizeSl.value(sizeSl.value() + changer);
+        break;
+      case 114:
+        xoffSl.value(xoffSl.value() + changer / 5);
+        break;
+      case 116:
+        yoffSl.value(yoffSl.value() + changer / 5);
+        break;
+      case 119:
+        speedSl.value(speedSl.value() + changer * 10);
+        speed = speedSl.value();
+        break;
+      default:
+        sizeSl.value(sizeSl.value() + changer);
+        break;
+    }
+  } else {
+    switch (keyCode) {
+      case 101:
+        qualitySl.value(qualitySl.value() - changer / 15);
+        break;
+      case 113:
+        sizeSl.value(sizeSl.value() - changer);
+        break;
+      case 114:
+        xoffSl.value(xoffSl.value() - changer / 5);
+        break;
+      case 116:
+        yoffSl.value(yoffSl.value() - changer / 5);
+        break;
+      case 119:
+        speedSl.value(speedSl.value() - changer * 10);
+        speed = speedSl.value();
+        break;
+      default:
+        sizeSl.value(sizeSl.value() - changer);
+        break;
+    }
+  }
 }
 
 function keyPressed() {
-	console.log(keyCode);
-	switch (keyCode) {
-		case 18:
-			acc = !acc;
-			break;
-		case 32:
-			adjust();
-			break;
-	}
+  console.log(keyCode);
+  switch (keyCode) {
+    case 18:
+      acc = !acc;
+      break;
+    case 32:
+      adjust();
+      break;
+  }
 }
 
 function adjust() {
-	resizeCanvas(windowWidth, windowHeight);
-	reset();
+  resizeCanvas(windowWidth, windowHeight);
+  reset();
 }
 
 function portionGen() {
-	let p = random(1);
-	let nx, ny;
-	if (p <= 0.01) {
-		nx = 0 * x + 0 * y;
-		ny = 0 * x + 0.16 * y;
-	} else if (p > 0.01 && p <= 0.86) {
-		nx = 0.85 * x + 0.04 * y;
-		ny = -0.04 * x + 0.85 * y + 1.6;
-	} else if (p > 0.86 && p <= 0.93) {
-		nx = 0.2 * x - 0.26 * y;
-		ny = 0.23 * x + 0.22 * y + 1.6;
-	} else if (p > 0.93 /*&& p <= 1*/) {
-		nx = -0.15 * x + 0.28 * y;
-		ny = 0.26 * x + 0.65 * y + 0.44;
-	}
-	x = nx;
-	y = ny;
+  let p = random(1);
+  let nx, ny;
+  if (p <= 0.01) {
+    nx = 0 * x + 0 * y;
+    ny = 0 * x + 0.16 * y;
+  } else if (p > 0.01 && p <= 0.86) {
+    nx = 0.85 * x + 0.04 * y;
+    ny = -0.04 * x + 0.85 * y + 1.6;
+  } else if (p > 0.86 && p <= 0.93) {
+    nx = 0.2 * x - 0.26 * y;
+    ny = 0.23 * x + 0.22 * y + 1.6;
+  } else if (p > 0.93 /*&& p <= 1*/) {
+    nx = -0.15 * x + 0.28 * y;
+    ny = 0.26 * x + 0.24 * y + 0.44;
+  }
+  x = nx;
+  y = ny;
 }
 
 function checkChange() {
-	if (
-		sizeSl.value() != size ||
-		// (speedSl.value() != speed) ||
-		qualitySl.value() / 10 != quality ||
-		xoffSl.value() != xoff ||
-		yoffSl.value() != yoff
-	) {
-		reset();
-	}
+  if (
+    sizeSl.value() != size ||
+    // (speedSl.value() != speed) ||
+    qualitySl.value() / 10 != quality ||
+    xoffSl.value() != xoff ||
+    yoffSl.value() != yoff
+  ) {
+    reset();
+  }
 }
 
 function reset() {
-	background(20);
-	fpsp.position(width - 64, 0);
+  background(20);
+  fpsp.position(width - 64, 0);
 }
 
 function randomGen() {
-	xoffSl.value(random(-width / 2, width / 2));
-	yoffSl.value(random(-height / 2, height / 2));
-	sizeSl.value(random(sizeSl.elt.min, sizeSl.elt.max));
+  xoffSl.value(random(-width / 2, width / 2));
+  yoffSl.value(random(-height / 2, height / 2));
+  sizeSl.value(random(sizeSl.elt.min, sizeSl.elt.max));
 }
 
 function applySettings() {
-	size = sizeSl.value();
-	speed = speedSl.value();
-	quality = qualitySl.value() / 10;
-	xoff = xoffSl.value();
-	yoff = yoffSl.value();
+  size = sizeSl.value();
+  speed = speedSl.value();
+  quality = qualitySl.value() / 10;
+  xoff = xoffSl.value();
+  yoff = yoffSl.value();
 }

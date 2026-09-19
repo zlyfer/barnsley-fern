@@ -223,7 +223,7 @@ function createLabeledSlider(label, minValue, maxValue, defaultValue, stepValue)
 }
 
 function bindSlider(slider, needsReset) {
-  slider.input(function() {
+  slider.input(function () {
     syncFromControls(needsReset);
   });
 }
